@@ -1,0 +1,330 @@
+{% extends 'base.html.twig' %}
+
+{% block navBtns %}
+  <li class="nav-item">
+    <a class="nav-link" href="/showOrders">
+      <i class="material-icons">
+        content_paste
+      </i>
+      <p>
+        Orders
+      </p>
+    </a>
+  </li>
+  {% if is_granted('ROLE_EDITOR') %}
+    <li class="nav-item active">
+      <a class="nav-link" href="/showProducts">
+        <i class="material-icons">
+          library_books
+        </i>
+        <p>
+          Products
+        </p>
+      </a>
+    </li>
+  {% endif %}
+  {% if is_granted('ROLE_ADMIN') %}
+    <li class="nav-item">
+      <a class="nav-link" href="/showCreateDBs">
+        <i class="material-icons">
+          archive
+        </i>
+        <p>
+          Load DBs
+        </p>
+      </a>
+    </li>
+  {% endif %}
+  <li class="nav-item">
+    <a class="nav-link" href="/report">
+      <i class="material-icons">
+        trending_up
+      </i>
+      <p>
+        Report
+      </p>
+    </a>
+  </li>
+{% endblock %}
+
+{% block page %}
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+    <div class="container-fluid">
+      <div class="navbar-wrapper">
+        <a class="navbar-brand" href="javascript:;">
+          Products
+        </a>
+      </div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="sr-only">
+          Toggle navigation
+        </span>
+        <span class="navbar-toggler-icon icon-bar"></span>
+        <span class="navbar-toggler-icon icon-bar"></span>
+        <span class="navbar-toggler-icon icon-bar"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end">
+        <form class="navbar-form" action="/searchProduct" method="GET">
+          <div class="input-group no-border">
+            <input type="text" value="" id="searchProd" name="searchStr" class="form-control" placeholder="Search products...">
+              <button type="button" class="btn btn-white btn-round btn-just-icon">
+                <i class="material-icons">
+                  search
+                </i>
+                <div class="ripple-container"></div>
+              </button>
+            </div>
+          </form>
+          <ul class="navbar-nav">
+            {% if is_granted('ROLE_EDITOR') %}
+              <li class="nav-item">
+                <a class="nav-link" href="/products2csv">
+                  <i class="material-icons">
+                    download
+                  </i>
+                  <p class="d-lg-none d-md-block">
+                    Download
+                  </p>
+                </a>
+              </li>
+            {% endif %}
+
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="/logout">
+                <i class="material-icons">
+                  logout
+                </i>
+                <p class="d-lg-none d-md-block">
+                  Logout
+                </p>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                <a class="dropdown-item" href="#">
+                  Profile
+                </a>
+                <a class="dropdown-item" href="#">
+                  Settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">
+                  Log out
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 class="card-title ">
+                  Products
+                </h4>
+                <p class="card-category">
+                  List of products
+                </p>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="pTable" class="table">
+                    <thead class=" text-primary">
+                      <th>
+                        Code
+                      </th>
+                      <th>
+                        Name
+                      </th>
+                      <th>
+                        Price
+                      </th>
+                      <th>
+                        Final price
+                      </th>
+                      <th>
+                        Status
+                      </th>
+                      <th>
+                        UID
+                      </th>
+                      <th>
+                        Image
+                      </th>
+                      {% if is_granted('ROLE_EDITOR') %}
+                        <th></th>
+                      {% endif %}
+                    </thead>
+                    <tbody><!--
+                                                                  {% for p in products %}
+                                                                    <tr>
+                                                                      <td>
+                                                                        {{ p.code }}
+                                                                      </td>
+                                                                      <td>
+                                                                        {% if is_granted('ROLE_EDITOR') %}
+                                                                          <form action="/saveProductName" method="PUT">
+                                                                            <div class="input-group no-border">
+                                                                              <input type="text" value="{{ p.title }}" name="newName" class="form-control">
+                                                                                <input type="text" value="{{ p.uid }}" name="pid" hidden>
+                                                                                  <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                                                                    <i class="material-icons">
+                                                                                      save
+                                                                                    </i>
+                                                                                  </button>
+                                                                                </div>
+                                                                              </form>
+                                                                            {% else %}
+                                                                              {{ p.title }}
+                                                                            {% endif %}
+                                                                          </td>
+                                                                          <td>
+                                                                            {{ p.price }}
+                                                                            €
+                                                                          </td>
+                                                                          <td>
+                                                                            {{ p.finalPrice }}
+                                                                            €
+                                                                          </td>
+                                                                          <td class="text-primary">
+                                                                            {{ p.status }}
+                                                                          </td>
+                                                                          <td>
+                                                                            {{ p.uid }}
+                                                                          </td>
+                                                                          {% if is_granted('ROLE_EDITOR') %}
+                                                                          <td>                               
+                                                                            <form action="/saveProductImage" method="POST" enctype='multipart/form-data'>
+                                                                              <div class="input-group no-border">
+                                                                                <input type="hidden" value="{{ p.uid }}" name="pid">
+                                                                                  <img src="{{ asset("#{p.imageId}") }}" width="48" height="48">
+                                                                                    <input type="file" accept="image/*" name="newImage" alt="img" class="form-control">
+                                                                                      <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                                                                        <i class="material-icons">
+                                                                                          save
+                                                                                        </i>
+                                                                                      </button>
+                                                                                    </div>
+                                                                                  </form>
+                                                                                </td>
+                                                                                <td>
+                                                                                  <form action="/deleteProduct" method="DELETE">
+                                                                                    <div class="input-group no-border">
+                                                                                      <input type="text" value="{{ p.uid }}" name="pid" hidden>
+                                                                                        <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                                                                          <i class="material-icons">
+                                                                                            delete
+                                                                                          </i>
+                                                                                        </button>
+                                                                                      </div>
+                                                                                    </form>
+                                                                                  </td>
+                                                                                  {% else %}
+                                                                                <td>
+                                                                                  <img src="{{ asset(" #{p.imageId}") }}" width="48" height="48">
+                                                                                </td>
+                                                                                {% endif %}
+                                                                                </tr>
+                                                                              {% endfor %}-->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container-fluid">
+        <nav class="float-left">
+          <ul>
+            <li><a href="https://www.creative-tim.com">Creative Tim
+                                                                                                                                                                                  </a></li>
+            <li><a href="https://creative-tim.com/presentation">About Us
+                                                                                                                                                                                  </a></li>
+            <li><a href="http://blog.creative-tim.com">Blog
+                                                                                                                                                                                  </a></li>
+            <li><a href="https://www.creative-tim.com/license">Licenses
+                                                                                                                                                                                  </a></li>
+          </ul>
+        </nav>
+        <div class="copyright float-right">
+          &copy;
+
+          <script>
+            document.write(new Date().getFullYear());
+            var table = $('#pTable').DataTable({
+              "ajax": {
+                "url": "/tableProducts",
+                "dataSrc": ""
+              },
+              "bLengthChange": false,
+              "searching": true,
+              sDom: 'lrtip',
+              "deferRender": true,
+              "columnDefs": [{
+                "targets": 0,
+                "data": "code"
+              },
+              {
+                "targets": 1,
+                "data": "title",
+                "render": function (data, type, product, meta) {
+                  return '<td>{% if is_granted("ROLE_EDITOR") %}<form action="/saveProductName" method="PUT"><div class="input-group no-border"><input type="text" value="' + product.title + '" name="newName" class="form-control"><input type="text" value="' + product.uid + '" name="pid" hidden><button type="submit" class="btn btn-white btn-round btn-just-icon"><i class="material-icons">save</i></button></div></form>{% else %}' + product.title + '{% endif %}</td>';
+                }
+              },
+              {
+                "targets": 2,
+                "data": "price",
+              },
+              {
+                "targets": 3,
+                "data": "finalPrice",
+              },
+              {
+                "targets": 4,
+                "data": "status",
+              },
+              {
+                "targets": 5,
+                "data": "uid",
+              },
+              {
+                "targets": 6,
+                "data": "imageId",
+                "render": function (data, type, product, meta) {
+                  return '{% if is_granted("ROLE_EDITOR") %}<td><form action="/saveProductImage" method="POST" enctype="multipart/form-data"><div class="input-group no-border"><input type="hidden" value="' + product.uid + '" name="pid"><img src="/' + product.imageId + '" width="48" height="48"><input type="file" accept="image/*" name="newImage" alt="img" class="form-control"><button type="submit" class="btn btn-white btn-round btn-just-icon"><i class="material-icons">save</i></button></div></form></td>{% else %}<td><img src="' + product.imageId + '" width="48" height="48"></td>{% endif %}';
+                }
+              },
+              {
+                "targets": 7,
+                "data": null,
+                "render": function (data, type, product, meta) {
+                  return '<td>{% if is_granted("ROLE_EDITOR") %}<form action="/deleteProduct" method="DELETE"><div class="input-group no-border"><input type="text" value="' + product.uid + '" name="pid" hidden><button type="submit" class="btn btn-white btn-round btn-just-icon"><i class="material-icons">delete</i></button></div></form>{% endif %}</td>';
+                }
+              }]
+            });
+            $('#searchProd').change(function () {
+              table.search($(this).val()).draw();
+            });
+          </script>
+          , made with 
+          <i class="material-icons">
+            favorite
+          </i>
+          by
+          <a href="https://www.creative-tim.com" target="_blank">
+            Creative Tim
+          </a>
+          for a better web.
+        </div>
+      </div>
+    </footer>
+  {% endblock %}
+  

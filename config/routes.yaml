@@ -1,3 +1,90 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\OrderController::showOrders
+app_createOrders:
+    path: /createOrders
+    controller: App\Controller\OrderController::createOrderDB
+
+app_createProducts:
+    path: /createProducts
+    controller: App\Controller\ProductController::createProductDB
+
+app_searchProducts:
+    path: /searchProduct
+    controller: App\Controller\ProductController::searchProduct
+
+app_searchOrder:
+    path: /searchOrder
+    controller: App\Controller\OrderController::searchOrder
+
+app_showOrders:
+    path: /showOrders
+    controller: App\Controller\OrderController::showOrders
+
+app_showProducts:
+    path: /showProducts
+    controller: App\Controller\ProductController::showProducts
+
+app_showCreateDBs:
+    path: /showCreateDBs
+    controller: App\Controller\CreateDBController::showCreateBtns
+
+app_orders2csv:
+    path: /orders2csv
+    controller: App\Controller\OrderController::orders2csv
+
+app_products2csv:
+    path: /products2csv
+    controller: App\Controller\ProductController::products2csv
+
+app_saveOrderStatus:
+    path: /saveOrderStatus
+    controller: App\Controller\OrderController::saveOrderStatus
+
+app_deleteOrder:
+    path: /deleteOrder
+    controller: App\Controller\OrderController::deleteOrder
+
+app_deleteProduct:
+    path: /deleteProduct
+    controller: App\Controller\ProductController::deleteProduct
+
+app_saveProductName:
+    path: /saveProductName
+    controller: App\Controller\ProductController::saveProductName
+
+app_saveProductImage:
+    path: /saveProductImage
+    controller: App\Controller\ProductController::saveProductImage
+
+app_register:
+    path: /register
+    controller: App\Controller\RegisterController::register
+
+app_login:
+    path: /login
+    controller: App\Controller\RegisterController::login
+
+app_logout:
+    path: /logout
+    controller: App\Controller\RegisterController::logout
+
+app_tableProducts:
+    path: /tableProducts
+    controller: App\Controller\ProductController::tableProducts
+
+app_report:
+    path: /report
+    controller: App\Controller\ReportController::showReport
+
+app_orderTotal:
+    path: /orderTotal
+    controller: App\Controller\OrderController::orderTotal
+
+app_orderCount:
+    path: /orderCount
+    controller: App\Controller\OrderController::orderCount
+
+app_productCount:
+    path: /productCount
+    controller: App\Controller\ProductController::productCount

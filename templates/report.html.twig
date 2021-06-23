@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+
+{% block navBtns %}
+  <li class="nav-item">
+    <a class="nav-link" href="/showOrders">
+      <i class="material-icons">
+        content_paste
+      </i>
+      <p>
+        Orders
+      </p>
+    </a>
+  </li>
+  {% if is_granted('ROLE_EDITOR') %}
+    <li class="nav-item">
+      <a class="nav-link" href="/showProducts">
+        <i class="material-icons">
+          library_books
+        </i>
+        <p>
+          Products
+        </p>
+      </a>
+    </li>
+  {% endif %}
+  {% if is_granted('ROLE_ADMIN') %}
+    <li class="nav-item">
+      <a class="nav-link" href="/showCreateDBs">
+        <i class="material-icons">
+          archive
+        </i>
+        <p>
+          Load DBs
+        </p>
+      </a>
+    </li>
+  {% endif %}
+  <li class="nav-item active">
+    <a class="nav-link" href="/report">
+      <i class="material-icons">
+        trending_up
+      </i>
+      <p>
+        Report
+      </p>
+    </a>
+  </li>
+{% endblock %}
+
+{% block page %}
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+    <div class="container-fluid">
+      <div class="navbar-wrapper">
+        <a class="navbar-brand" href="javascript:;">
+          Report
+        </a>
+      </div>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+        <a class="nav-link" href="/logout">
+          <i class="material-icons">
+            logout
+          </i>
+          <p class="d-lg-none d-md-block">
+            Logout
+          </p>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+          <a class="dropdown-item" href="#">
+            Profile
+          </a>
+          <a class="dropdown-item" href="#">
+            Settings
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">
+            Log out
+          </a>
+        </div>
+      </li>
+    </ul>
+    </nav>
+    <!-- End Navbar -->
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-chart card-header-warning">
+                <div class="ct-chart" id="ordersTotalChart"></div>
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">
+                  Order total diagram
+                </h4>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">
+                    access_time
+                  </i>
+                  updated now
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title" id="numOrders">
+                  Total Orders #:
+                </h4>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">
+                    access_time
+                  </i>
+                  updated now
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title" id="numProducts">
+                  Total Products #:
+                </h4>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">
+                    access_time
+                  </i>
+                  updated now
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/report.js"></script>
+
+    <footer class="footer">
+      <div class="container-fluid">
+        <nav class="float-left">
+          <ul>
+            <li><a href="https://www.creative-tim.com">Creative Tim
+                                                                                                                                                                  </a></li>
+            <li><a href="https://creative-tim.com/presentation">About Us
+                                                                                                                                                                  </a></li>
+            <li><a href="http://blog.creative-tim.com">Blog
+                                                                                                                                                                  </a></li>
+            <li><a href="https://www.creative-tim.com/license">Licenses
+                                                                                                                                                                  </a></li>
+          </ul>
+        </nav>
+        <div class="copyright float-right">
+          &copy;
+          <script>
+              document.write(new Date().getFullYear())
+            </script>
+          , made with 
+          <i class="material-icons">
+            favorite
+          </i>
+          by
+          <a href="https://www.creative-tim.com" target="_blank">
+            Creative Tim
+          </a>
+          for a better web.
+        </div>
+      </div>
+    </footer>
+  {% endblock %}
+  
